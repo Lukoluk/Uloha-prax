@@ -17,9 +17,9 @@ export default async function Home() {
     .execute();
 
   return (
+    <>
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <p className="text-4xl font-bold">Spotify</p>
         <div className="grid grid-cols-3 gap-4">
           {albums.map((album) => (
             <div key={album.id} className="card w-96 bg-base-100 shadow-sm">
@@ -27,9 +27,9 @@ export default async function Home() {
                 <span className="badge badge-xs badge-warning">Pop</span>
                 <h2 className="text-3xl font-bold">{album.name}</h2>
                 <p>ID: {album.id}</p>
-                 <Link
-                    href={`/author/${album.author_id}`}>
-                    Author: {album.author_name}
+                <Link
+                  href={`/author/${album.author_id}`}>
+                  Author: {album.author_name}
                 </Link>
                 <p>
                   Release Date: {new Date(album.release_date).toDateString()}
@@ -50,6 +50,6 @@ export default async function Home() {
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <p>Footer</p>
       </footer>
-    </div>
+    </div></>
   );
 }
