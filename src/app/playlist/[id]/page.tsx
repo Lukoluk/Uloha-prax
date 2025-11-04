@@ -34,18 +34,20 @@ export default async function PlaylistDetails({ params }: { params: { id: string
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <h1 className="text-4xl font-bold">{playlist[0].name}</h1>
         <table className="table w-full">
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Duration</th>
-          </tr>
-          {songs.map((song, index) => (
-            <tr key={song.id}>
-              <td>{index + 1}</td>
-              <td>{song.song_name}</td>
-              <td>{formatDuration(song.song_duration)}</td>
+          <tbody>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Duration</th>
             </tr>
-          ))}
+            {songs.map((song, index) => (
+              <tr key={song.id}>
+                <td>{index + 1}</td>
+                <td>{song.song_name}</td>
+                <td>{formatDuration(song.song_duration)}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
         <div className="mt-6">
           <Link className="btn btn-primary btn-block" href="/playlists">Go Back</Link>

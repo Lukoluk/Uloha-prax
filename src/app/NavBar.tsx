@@ -22,14 +22,14 @@ export function NavBar(){
                   pathname: "/playlists",
                 }}
               >
-                Search
+                Playlists
               </Link>
             </li>
           </ul>
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost text-5xl tracking-wider">Spotify</a>
+        <a className="btn btn-ghost text-5xl tracking-wider" href='./'>Spotify</a>
       </div>
       <div className="navbar-end">
 

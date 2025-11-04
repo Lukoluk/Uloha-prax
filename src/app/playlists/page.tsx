@@ -8,8 +8,9 @@ export default async function Playlists() {
     .selectFrom("playlists")
     .select([
       "playlists.id",
-      "playlists.name"
+      "playlists.name",
     ])
+    .where("playlists.user_id", "=", 1)
     .execute();
 
   return (
@@ -20,6 +21,7 @@ export default async function Playlists() {
           {playlists.map((playlist) => (
             <div key={playlist.id} className="card w-96 bg-base-100 shadow-sm">
               <div className="card-body">
+                <span className="badge badge-xs badge-warning">Playlist</span>
                 <h2 className="text-3xl font-bold"><Link
                   href={`/playlist/${playlist.id}`}>
                   {playlist.name}
