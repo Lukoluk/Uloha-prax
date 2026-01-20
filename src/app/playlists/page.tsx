@@ -1,5 +1,7 @@
 import { getDb } from "@/lib/db";
-import Link from 'next/link'
+import Link from 'next/link';
+import { RemovePlaylistButton } from "../playlist/[id]/RemovePlaylistButton";
+import { CreatePlaylistPage } from "./NewPlaylistButton";
 
 export default async function Playlists() {
   const db = getDb();
@@ -17,6 +19,8 @@ export default async function Playlists() {
     <>
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        <p className="text-2xl font-bold">Playlists</p>
+          <CreatePlaylistPage/>
         <div className="grid grid-cols-3 gap-4">
           {playlists.map((playlist) => (
             <div key={playlist.id} className="card w-96 bg-base-100 shadow-sm">
@@ -26,6 +30,9 @@ export default async function Playlists() {
                   href={`/playlist/${playlist.id}`}>
                   {playlist.name}
                 </Link></h2>
+                <RemovePlaylistButton
+                  playlistId={playlist.id}
+                />
               </div>
             </div>
           ))}

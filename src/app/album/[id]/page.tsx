@@ -1,5 +1,6 @@
 import { getDb } from "@/lib/db";
-import Link from 'next/link'
+import Link from 'next/link';
+import { AddPlaylistSongButton } from "./AddPlaylistSongButton";
 
 function formatDuration(duration: number): string {
   const minutes = Math.floor(duration / 60);
@@ -30,6 +31,11 @@ export default async function AlbumDetails({ params }: { params: { id: string } 
     ])
     .execute();
 
+  const playlists = await db
+    .selectFrom("playlists")
+    .selectAll()
+    .execute();
+
 
   return (    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -39,7 +45,7 @@ export default async function AlbumDetails({ params }: { params: { id: string } 
           description about the album, its tracks, release date, and anything else
           youd like visitors to know. Keep it simple, clean, and informative.
         </p>
-        <table className="table w-full">
+        <tbody className="table w-full">
           <tr>
             <th>Id</th>
             <th>Name</th>
@@ -50,9 +56,25 @@ export default async function AlbumDetails({ params }: { params: { id: string } 
               <td>{index + 1}</td>
               <td>{song.name}</td>
               <td>{formatDuration(song.duration)}</td>
+              <td>
+                <details className="dropdown">
+                <summary className="btn m-1">add to playlist</summary>
+                <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                  {playlists.map((playlist) => (
+                    <li key={playlist.id}>
+                      <AddPlaylistSongButton
+                        playlistId={playlist.id}
+                        songId={song.id}
+                        playlistName={playlist.name}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </details>
+              </td>
             </tr>
           ))}
-        </table>
+        </tbody>
         <div className="mt-6">
           <Link className="btn btn-primary btn-block" href="/">Go Home</Link>
         </div>

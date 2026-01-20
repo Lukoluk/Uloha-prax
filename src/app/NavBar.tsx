@@ -1,7 +1,9 @@
 "use client";
 import Link from 'next/link'
 import {useState} from "react";
+import { useRouter } from 'next/navigation'
 export function NavBar(){
+  const router = useRouter()
   const [searchInput, setSearchInput] = useState("");
  
   const searchLinkQuery = searchInput !== "" ? { q: searchInput } : {};
@@ -14,7 +16,7 @@ export function NavBar(){
             <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /> </svg>
           </div>
           <ul
-            tabIndex="-1" 
+            tabIndex={-1}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li>
               <Link
@@ -40,6 +42,11 @@ export function NavBar(){
           value={searchInput}
           onChange={(e) => {
             setSearchInput(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              router.push(`/search?q=${searchInput}`);
+            }
           }}
         />
         <Link

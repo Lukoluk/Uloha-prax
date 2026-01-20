@@ -1,5 +1,8 @@
 import { getDb } from "@/lib/db";
-import Link from 'next/link'
+import Link from 'next/link';
+import { RemovePlaylistSongButton } from "./RemovePlaylistSongButton";
+import { RemovePlaylistButton } from "./RemovePlaylistButton";
+import { EditPlaylistButton } from "./editPlaylistButton";
 
 function formatDuration(duration: number): string {
   const minutes = Math.floor(duration / 60);
@@ -9,7 +12,7 @@ function formatDuration(duration: number): string {
 
 export default async function PlaylistDetails({ params }: { params: { id: string } }) {
   const db = getDb();
-  const { id } = params;
+  const { id } = await params;
   console.log("PLAYLIST ID:", id);
 
   const playlist = await db
@@ -23,7 +26,7 @@ export default async function PlaylistDetails({ params }: { params: { id: string
     .where("playlists_songs.playlist_id", "=", Number(id))
     .innerJoin("songs", "playlists_songs.song_id", "songs.id")
     .select([
-      "playlists_songs.id",
+      "songs.id",
       "songs.name as song_name",
       "songs.duration as song_duration",
     ])
@@ -45,10 +48,22 @@ export default async function PlaylistDetails({ params }: { params: { id: string
                 <td>{index + 1}</td>
                 <td>{song.song_name}</td>
                 <td>{formatDuration(song.song_duration)}</td>
+                <td>
+                    <RemovePlaylistSongButton
+                      playlistId={playlist[0].id}
+                      songId={song.id}
+                    />
+                  </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <EditPlaylistButton
+          playlist={playlist[0]}
+        />
+        <RemovePlaylistButton
+          playlistId={playlist[0].id}
+        />
         <div className="mt-6">
           <Link className="btn btn-primary btn-block" href="/playlists">Go Back</Link>
         </div>
