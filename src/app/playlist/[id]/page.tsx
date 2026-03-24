@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { RemovePlaylistSongButton } from "./RemovePlaylistSongButton";
 import { RemovePlaylistButton } from "./RemovePlaylistButton";
 import { EditPlaylistButton } from "./editPlaylistButton";
+import { AddLikedSongButton } from "../../../components/AddLikedSongButton";
 
 function formatDuration(duration: number): string {
   const minutes = Math.floor(duration / 60);
@@ -33,8 +34,8 @@ export default async function PlaylistDetails({ params }: { params: { id: string
     .execute();
 
 
-  return (    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+  return (  
+    <>
         <h1 className="text-4xl font-bold">{playlist[0].name}</h1>
         <table className="table w-full">
           <tbody>
@@ -48,6 +49,12 @@ export default async function PlaylistDetails({ params }: { params: { id: string
                 <td>{index + 1}</td>
                 <td>{song.song_name}</td>
                 <td>{formatDuration(song.song_duration)}</td>
+                <td>
+                  <AddLikedSongButton
+                    userId={1}
+                    songId={song.id}
+                  />
+                </td>
                 <td>
                     <RemovePlaylistSongButton
                       playlistId={playlist[0].id}
@@ -67,6 +74,5 @@ export default async function PlaylistDetails({ params }: { params: { id: string
         <div className="mt-6">
           <Link className="btn btn-primary btn-block" href="/playlists">Go Back</Link>
         </div>
-      </main>
-    </div>
+      </>
   )};

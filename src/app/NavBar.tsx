@@ -1,8 +1,10 @@
 "use client";
 import Link from 'next/link'
-import {useState} from "react";
+import {useContext, useState} from "react";
 import { useRouter } from 'next/navigation'
+import { PlaybackContext } from './playback-context';
 export function NavBar(){
+  const playbackContext = useContext(PlaybackContext)
   const router = useRouter()
   const [searchInput, setSearchInput] = useState("");
  
@@ -11,6 +13,7 @@ export function NavBar(){
     
     <div className="navbar bg-base-100 shadow-sm h-26">
       <div className="navbar-start">
+        <div>Dummy: {playbackContext.dummy}</div>
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /> </svg>
@@ -27,6 +30,24 @@ export function NavBar(){
                 Playlists
               </Link>
             </li>
+            <li>
+              <Link
+                href={{
+                  pathname: "/liked_songs",
+                }}
+              >
+                Liked
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={{
+                  pathname: "/history",
+                }}
+              >
+                History
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -34,6 +55,19 @@ export function NavBar(){
         <a className="btn btn-ghost text-5xl tracking-wider" href='./'>Spotify</a>
       </div>
       <div className="navbar-end">
+        <Link
+          href={{
+            pathname: "/auth/login",
+          }}
+          className="btn btn-ghost text-xl mr-1"
+          >Login</Link>
+
+          <Link
+          href={{
+            pathname: "/auth/Register",
+          }}
+          className="btn btn-ghost text-xl mr-4"
+          >Register</Link>
 
         <input
           type="text"

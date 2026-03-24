@@ -1,6 +1,8 @@
 import { getDb } from "@/lib/db";
 import Link from 'next/link';
 import { AddPlaylistSongButton } from "./AddPlaylistSongButton";
+import { AddLikedSongButton } from "../../../components/AddLikedSongButton";
+import { cookies } from 'next/headers';
 
 function formatDuration(duration: number): string {
   const minutes = Math.floor(duration / 60);
@@ -35,10 +37,10 @@ export default async function AlbumDetails({ params }: { params: { id: string } 
     .selectFrom("playlists")
     .selectAll()
     .execute();
+  
 
-
-  return (    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+  return (  
+    <>
         <h1 className="text-4xl font-bold">{album[0].name} - {album[0].author_name}</h1>
         <p className="text-lg text-gray-700 max-w-2xl">
           This is the Album Details page for album {album[0].name}. Here you can add some
@@ -56,6 +58,12 @@ export default async function AlbumDetails({ params }: { params: { id: string } 
               <td>{index + 1}</td>
               <td>{song.name}</td>
               <td>{formatDuration(song.duration)}</td>
+              <td>
+                <AddLikedSongButton
+                  userId={1}
+                  songId={song.id}
+                />
+              </td>
               <td>
                 <details className="dropdown">
                 <summary className="btn m-1">add to playlist</summary>
@@ -78,6 +86,5 @@ export default async function AlbumDetails({ params }: { params: { id: string } 
         <div className="mt-6">
           <Link className="btn btn-primary btn-block" href="/">Go Home</Link>
         </div>
-      </main>
-    </div>
+      </>
   )};

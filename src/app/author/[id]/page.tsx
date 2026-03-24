@@ -26,8 +26,8 @@ export default async function AuhorDetails({ params }: { params: { id: string } 
 
   console.log("Fetched author:", author);
 
-  return (    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+  return (    
+    <>
         <h1 className="text-4xl font-bold">{author[0].name}</h1>
         <p className="text-lg text-gray-700 max-w-2xl">
           {author[0].bio}
@@ -53,6 +53,5 @@ export default async function AuhorDetails({ params }: { params: { id: string } 
         <div className="mt-6">
           <Link className="btn btn-primary btn-block" href="/">Go home</Link>
         </div>
-      </main>
-    </div>
+     </>
   )};

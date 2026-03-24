@@ -9,6 +9,8 @@ export async function seed(db: Kysely<DB>): Promise<void> {
   await db.deleteFrom("albums").execute();
   await db.deleteFrom("authors").execute();
   await db.deleteFrom("users").execute();
+  await db.deleteFrom("user_liked_songs").execute();
+  await db.deleteFrom("playback_events").execute();
 
   for (let i = 0; i < 20; i += 1) {
     const numBioParagraphs = faker.number.int({ min: 0, max: 5 });
@@ -91,6 +93,7 @@ export async function seed(db: Kysely<DB>): Promise<void> {
   }
 
   const users = await db.selectFrom("users").selectAll().execute();
+  
 
   for (const user of users) {
     const numPlaylists = faker.number.int({ min: 1, max: 10 });
@@ -118,6 +121,37 @@ export async function seed(db: Kysely<DB>): Promise<void> {
         .insertInto("playlists_songs")
         .values({
           playlist_id: playlist.id,
+          song_id: faker.helpers.arrayElement(songIds),
+        })
+        .execute();
+    }
+  }
+
+  for (const user of users) {
+    const numSongs = faker.number.int({ min: 0, max: 20 });
+
+    for (let i = 0; i < numSongs; i += 1) {
+      await db
+        .insertInto("user_liked_songs")
+        .values({
+          user_id: user.id,
+          song_id: faker.helpers.arrayElement(songIds),
+        })
+        .execute();
+    }
+  }
+
+  for (const user of users) {
+    const numSongs = faker.number.int({ min: 1, max: 20 });
+    const items = ['playback_start', 'playback_skip', 'playback_end'];
+
+    for (let i = 0; i < numSongs; i += 1) {
+      await db
+        .insertInto("playback_events")
+        .values({
+          event_name: faker.helpers.arrayElement(items),
+          event_date: faker.date.past().getTime(),
+          user_id: user.id,
           song_id: faker.helpers.arrayElement(songIds),
         })
         .execute();
