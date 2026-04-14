@@ -11,9 +11,20 @@ function formatDuration(duration: number): string {
 }
 
 export default async function AlbumDetails({ params }: { params: { id: string } }) {
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('userId')?.value
+
+  if (!userId) {
+    console.log('No userId cookie found')
+    return
+  }
+
+  console.log("User ID from cookie:", userId);
+
   const db = getDb();
   const { id } = params;
   console.log("Album ID:", id);
+
 
   const songs = await db
     .selectFrom("songs")
@@ -60,7 +71,7 @@ export default async function AlbumDetails({ params }: { params: { id: string } 
               <td>{formatDuration(song.duration)}</td>
               <td>
                 <AddLikedSongButton
-                  userId={1}
+                  userId={Number(userId)}
                   songId={song.id}
                 />
               </td>

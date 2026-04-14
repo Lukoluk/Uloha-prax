@@ -12,11 +12,18 @@ export default async function History() {
   const db = getDb();
 
   const cookieStore = await cookies()
-  const id = cookieStore.get('id')
+  const userId = cookieStore.get('userId')?.value
+
+  if (!userId) {
+    console.log('No userId cookie found')
+    return
+  }
+
+  console.log("User ID from cookie:", userId);
 
   const songs = await db
     .selectFrom("playback_events")
-    .where("playback_events.user_id", "=", Number(id))
+    .where("playback_events.user_id", "=", Number(userId))
     .innerJoin("songs", "playback_events.song_id", "songs.id")
     .select([
       "playback_events.event_date",

@@ -6,6 +6,7 @@ import { PlaybackBar } from "./PlaybackBar";
 import { SideBar } from "./SideBar";
 import { PlaybackContextProvider } from "./PlaybackContextProvider";
 import { getDb } from "@/lib/db";
+import { cookies } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userId = 1;
+
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('userId')?.value
+
+  if (!userId) {
+    console.log('No userId cookie found')
+  }
 
   const db = getDb();
 
@@ -48,7 +55,7 @@ export default async function RootLayout({
     userId != null
       ? await db
           .selectFrom("user_liked_songs")
-          .where("user_id", "=", userId)
+          .where("user_id", "=", Number(userId))
           .select("song_id")
           .execute()
       : null;
@@ -57,7 +64,7 @@ export default async function RootLayout({
     userId != null
       ? await db
           .selectFrom("playlists")
-          .where("user_id", "=", userId)
+          .where("user_id", "=", Number(userId))
           .select(["id", "name"])
           .execute()
       : null;

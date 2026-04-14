@@ -1,14 +1,11 @@
-import { getDb } from "@/lib/db";
-import Link from 'next/link';
 import { login } from "@/actions/auth";
 
 export default async function LoginPage() {
-  const db = getDb();
 
   return (    
     <>
       <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form action={login} method="POST">
+      <form action={login}>
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 mb-5">
       
           <label className="label">Email</label>

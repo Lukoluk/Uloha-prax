@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {useContext, useState} from "react";
 import { useRouter } from 'next/navigation'
 import { PlaybackContext } from './playback-context';
+import { LogoutButton } from '@/components/LogoutButton';
 export function NavBar(){
   const playbackContext = useContext(PlaybackContext)
   const router = useRouter()
@@ -68,6 +69,9 @@ export function NavBar(){
           }}
           className="btn btn-ghost text-xl mr-4"
           >Register</Link>
+
+          <LogoutButton />
+
 
         <input
           type="text"

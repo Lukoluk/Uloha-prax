@@ -18,6 +18,7 @@ interface PlaybackStatus {
   } | null;
   isShuffled: boolean;
   shuffleOrder: number[];
+  isRepeated: boolean;
   shufflePosition: number;
 }
 
@@ -137,6 +138,7 @@ export function PlaybackContextProvider({
     progress: 0,
     playbackStart: null,
     isShuffled: false,
+    isRepeated: false,
     shuffleOrder: [],
     shufflePosition: 0,
   });
@@ -147,7 +149,7 @@ export function PlaybackContextProvider({
 
   const handleNext = useCallback(() => {
     if (currentSong && playbackStatus.progress < currentSong.duration) {
-      recordPlaybackSkip(currentSong.id);
+      //recordPlaybackSkip(currentSong.id);
     }
     setPlaybackStatus((prev) => handleNextPlaybackStatus(prev));
   }, [currentSong, playbackStatus.progress, setPlaybackStatus]);
@@ -163,7 +165,7 @@ export function PlaybackContextProvider({
       const newProgress = playbackStart.progressAtStart + elapsed;
 
       if (newProgress >= currentSong.duration) {
-        recordPlaybackEnd(currentSong.id);
+        //recordPlaybackEnd(currentSong.id);
         handleNext();
       } else {
         setPlaybackStatus((prev) => ({ ...prev, progress: newProgress }));

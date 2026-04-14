@@ -4,6 +4,7 @@ import { RemovePlaylistSongButton } from "./RemovePlaylistSongButton";
 import { RemovePlaylistButton } from "./RemovePlaylistButton";
 import { EditPlaylistButton } from "./editPlaylistButton";
 import { AddLikedSongButton } from "../../../components/AddLikedSongButton";
+import { cookies } from "next/headers";
 
 function formatDuration(duration: number): string {
   const minutes = Math.floor(duration / 60);
@@ -15,6 +16,16 @@ export default async function PlaylistDetails({ params }: { params: { id: string
   const db = getDb();
   const { id } = await params;
   console.log("PLAYLIST ID:", id);
+
+  const cookieStore = await cookies()
+    const userId = cookieStore.get('userId')?.value
+  
+    if (!userId) {
+      console.log('No userId cookie found')
+      return
+    }
+
+    console.log("User ID from cookie:", userId);
 
   const playlist = await db
     .selectFrom("playlists")
@@ -51,7 +62,7 @@ export default async function PlaylistDetails({ params }: { params: { id: string
                 <td>{formatDuration(song.song_duration)}</td>
                 <td>
                   <AddLikedSongButton
-                    userId={1}
+                    userId={Number(userId)}
                     songId={song.id}
                   />
                 </td>

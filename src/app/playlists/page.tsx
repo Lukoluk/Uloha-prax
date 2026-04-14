@@ -8,7 +8,13 @@ export default async function Playlists() {
   const db = getDb();
 
   const cookieStore = await cookies()
-  const id = cookieStore.get('id')
+  const userId = cookieStore.get('userId')?.value
+
+  console.log(cookieStore.getAll())
+
+
+  console.log("User ID from cookie:", userId);
+  console.log("User ID in number from cookie:", Number(userId));
 
   const playlists = await db
     .selectFrom("playlists")
@@ -16,7 +22,7 @@ export default async function Playlists() {
       "playlists.id",
       "playlists.name",
     ])
-    .where("playlists.user_id", "=", Number(id))
+    .where("playlists.user_id", "=", Number(userId))
     .execute();
 
   return (

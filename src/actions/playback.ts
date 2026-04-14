@@ -3,8 +3,7 @@
 import { getDb } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export async function recordPlaybackStart(songId: number) {
-  const userId = 1;
+export async function recordPlaybackStart(songId: number, userId: number) {
 
   const db = getDb();
   await db
@@ -19,8 +18,7 @@ export async function recordPlaybackStart(songId: number) {
   revalidatePath("/history");
 }
 
-export async function recordPlaybackEnd(songId: number) {
-  const userId = 1;
+export async function recordPlaybackEnd(songId: number, userId: number) {
 
   const db = getDb();
   await db
@@ -35,8 +33,7 @@ export async function recordPlaybackEnd(songId: number) {
   revalidatePath("/history");
 }
 
-export async function recordPlaybackSkip(songId: number) {
-  const userId = 1;
+export async function recordPlaybackSkip(songId: number, userId: number) {
 
   const db = getDb();
   await db

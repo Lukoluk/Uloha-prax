@@ -4,7 +4,7 @@ import { getDb } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function createPlaylist(formData: FormData) {
+export async function createPlaylist(formData: FormData, userId: number) {
   const playlistName = formData.get("playlistName");
 
   if (playlistName == null) {
@@ -23,7 +23,7 @@ export async function createPlaylist(formData: FormData) {
     .insertInto("playlists")
     .values({
       name: playlistNameStr,
-      user_id: 1,
+      user_id: userId,
     })
     .returningAll()
     .executeTakeFirstOrThrow();

@@ -1,6 +1,7 @@
 import { getDb } from "@/lib/db";
 import Link from 'next/link';
 import { RemoveLikedSongButton } from "./RemoveLikedSongButton";
+import { cookies } from 'next/headers';
 
 function formatDuration(duration: number): string {
   const minutes = Math.floor(duration / 60);
@@ -11,9 +12,19 @@ function formatDuration(duration: number): string {
 export default async function LikedSongs() {
   const db = getDb();
 
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('userId')?.value
+
+  if (!userId) {
+    console.log('No userId cookie found')
+    return
+  }
+
+  console.log("User ID from cookie:", userId);
+
   const songs = await db
     .selectFrom("user_liked_songs")
-    .where("user_liked_songs.user_id", "=", 1)
+    .where("user_liked_songs.user_id", "=", Number(userId))
     .innerJoin("songs", "user_liked_songs.song_id", "songs.id")
     .select([
       "songs.id",
@@ -40,7 +51,7 @@ export default async function LikedSongs() {
                 <td>{formatDuration(song.song_duration)}</td>
                 <td>
                     <RemoveLikedSongButton
-                      userId={1}
+                      userId={Number(userId)}
                       songId={song.id}
                     />
                   </td>
