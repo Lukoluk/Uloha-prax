@@ -49,6 +49,15 @@ export function NavBar(){
                 History
               </Link>
             </li>
+            <li>
+              <Link
+                href={{
+                  pathname: "/following_authors",
+                }}
+              >
+                Following authors
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
